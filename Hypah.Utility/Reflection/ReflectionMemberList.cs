@@ -15,7 +15,7 @@ namespace Hypah.Utility.Reflection
 
         public void AddRange(IEnumerable<IReflectionMember> members) => Members.AddRange(members);
 
-        public ReflectionMemberList HasAttributte<T>() where T : Attribute
+        public ReflectionMemberList WithAttributte<T>() where T : Attribute
         {
             var members = Members.Where(x => x.GetAttributes<T>().Any());
             return new ReflectionMemberList(members);

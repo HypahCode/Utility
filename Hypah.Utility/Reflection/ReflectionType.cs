@@ -15,6 +15,10 @@ namespace Hypah.Utility.Reflection
 
         public T? Create<T>(params Type[] arguments) where T : class
         {
+            if (Type.IsAssignableFrom(typeof(T)))
+            {
+                throw new InvalidCastException($"Cannot assign {Type} to {typeof(T)}");
+            }
             return Activator.CreateInstance(Type, arguments) as T;
         }
 

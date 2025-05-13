@@ -1,4 +1,6 @@
-﻿namespace Hypah.Utility.Text
+﻿using System.Text;
+
+namespace Hypah.Utility.Text
 {
     public static class StringExtensions
     {
@@ -23,6 +25,19 @@
             if (startIndex < 0 || endIndex < 0)
                 return string.Empty;
             return str.Substring(startIndex, endIndex - startIndex);
+        }
+
+        public static int IndexOfReverse(this string haystack, string needle, int startIndex)
+        {
+            var revHaystack = new string(haystack.Reverse().ToArray());
+            var revNeedle = new string(needle.Reverse().ToArray());
+            var revIndex = haystack.Length - startIndex;
+            var idx = revHaystack.IndexOf(revNeedle, revIndex);
+            if (idx == -1)
+            {
+                return -1;
+            }
+            return haystack.Length - idx - needle.Length;
         }
     }
 }

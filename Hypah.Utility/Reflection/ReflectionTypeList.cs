@@ -13,6 +13,10 @@ namespace Hypah.Utility.Reflection
             Types.AddRange(types);
         }
 
+        /// <summary>
+        /// Entry point to get all types from all assemblies
+        /// </summary>
+        /// <returns>List of types</returns>
         public static ReflectionTypeList GetAllTypes()
         {
             var list = new ReflectionTypeList();
@@ -23,6 +27,10 @@ namespace Hypah.Utility.Reflection
             return list;
         }
 
+        /// <summary>
+        /// Entry point to get all types from a specified assembly
+        /// </summary>
+        /// <returns>List of types</returns>
         public static ReflectionTypeList GetTypes(Assembly asm)
         {
             return new ReflectionTypeList(asm.GetTypes().Select(x => new ReflectionType(x)));
@@ -39,12 +47,12 @@ namespace Hypah.Utility.Reflection
             return new ReflectionTypeList(Types.Where(x => interfaceType.IsAssignableFrom(x.Type)));
         }
 
-        public ReflectionTypeList HasAttributte<T>() where T : Attribute
+        public ReflectionTypeList WithAttributte<T>() where T : Attribute
         {
             return new ReflectionTypeList(Types.Where(x => x.Type.GetCustomAttributes<T>().Any()));
         }
 
-        public ReflectionTypeList HasConstructor(params Type[] constructorArguments)
+        public ReflectionTypeList WithConstructor(params Type[] constructorArguments)
         {
             return new ReflectionTypeList(Types.Where(x => x.GetConstructor(constructorArguments) != null));
         }
