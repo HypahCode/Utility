@@ -19,38 +19,55 @@ namespace Hypah.Logging
             }
         }
 
-        private static readonly object _lock = new object();
-        
+        public static void Trace(string component, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
+        {
+            Instance.LogMessage(new LogMessage(LogLevel.Trace, component, methodName ?? "", filePath ?? "", lineNumber, msg, DateTime.Now));
+
+        }
+
+        public static void Debug(string component, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
+        {
+            Instance.LogMessage(new LogMessage(LogLevel.Debug, component, methodName ?? "", filePath ?? "", lineNumber, msg, DateTime.Now));
+        }
+
+        public static void Info(string component, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
+        {
+            Instance.LogMessage(new LogMessage(LogLevel.Info, component, methodName ?? "", filePath ?? "", lineNumber, msg, DateTime.Now));
+        }
+
+        public static void Warning(string component, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
+        {
+            Instance.LogMessage(new LogMessage(LogLevel.Warn, component, methodName ?? "", filePath ?? "", lineNumber, msg, DateTime.Now));
+        }
+
+        public static void Error(string component, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
+        {
+            Instance.LogMessage(new LogMessage(LogLevel.Error, component, methodName ?? "", filePath ?? "", lineNumber, msg, DateTime.Now));
+        }
+
+        public static void Fatal(string component, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
+        {
+            Instance.LogMessage(new LogMessage(LogLevel.Fatal, component, methodName ?? "", filePath ?? "", lineNumber, msg, DateTime.Now));
+        }
+
         public static void Write(LogLevel level, string component, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
         {
-            lock (_lock)
-            {
-                Instance.LogMessage(new LogMessage(level, component, methodName ?? "", filePath ?? "", lineNumber, msg, DateTime.Now));
-            }
+            Instance.LogMessage(new LogMessage(level, component, methodName ?? "", filePath ?? "", lineNumber, msg, DateTime.Now));
         }
 
         public static void Write(LogLevel level, object? component, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
         {
-            lock (_lock)
-            {
-                Instance.LogMessage(new LogMessage(level, component?.ToString() ?? "", methodName ?? "", filePath ?? "", lineNumber, msg, DateTime.Now));
-            }
+            Instance.LogMessage(new LogMessage(level, component?.ToString() ?? "", methodName ?? "", filePath ?? "", lineNumber, msg, DateTime.Now));
         }
 
         public static void RegisterLogReceiver(ILogReceiver logReceiver)
         {
-            lock (_lock)
-            {
-                Instance.RegisterReciever(logReceiver);
-            }
+            Instance.RegisterReciever(logReceiver);
         }
 
         public static void RemoveLogReceiver(ILogReceiver logReceiver)
         {
-            lock (_lock)
-            {
-                Instance.RemoveReciever(logReceiver);
-            }
+            Instance.RemoveReciever(logReceiver);
         }
 
         public static void AddFileLogger(string filename, bool createNew = false)

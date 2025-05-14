@@ -18,14 +18,44 @@ namespace Hypah.Logging
         {
         }
 
+        public static void Trace(string component, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
+        {
+            Log.Trace(component, msg, methodName ?? "", filePath ?? "", lineNumber);
+        }
+
+        public static void Debug(string component, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
+        {
+            Log.Debug(component, msg, methodName ?? "", filePath ?? "", lineNumber);
+        }
+
+        public static void Info(string component, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
+        {
+            Log.Info(component, msg, methodName ?? "", filePath ?? "", lineNumber);
+        }
+
+        public static void Warning(string component, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
+        {
+            Log.Warning(component, msg, methodName ?? "", filePath ?? "", lineNumber);
+        }
+
+        public static void Error(string component, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
+        {
+            Log.Error(component, msg, methodName ?? "", filePath ?? "", lineNumber);
+        }
+
+        public static void Fatal(string component, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
+        {
+            Log.Fatal(component, msg, methodName ?? "", filePath ?? "", lineNumber);
+        }
+
         public void Write(LogLevel level, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
         {
-            Log.Write(level, _component, msg, methodName, filePath, lineNumber);
+            Log.Write(level, _component, msg, methodName ?? "", filePath ?? "", lineNumber);
         }
 
         public void Write(string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
         {
-            Log.Write(_defaultLevel, _component, msg, methodName, filePath, lineNumber);
+            Log.Write(_defaultLevel, _component, msg, methodName ?? "", filePath ?? "", lineNumber);
         }
     }
 }
