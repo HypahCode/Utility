@@ -1,4 +1,4 @@
-﻿namespace Hypah.Utility.FileSystem
+﻿namespace Hypah.Utility.Files
 {
     public sealed class FilePath : IComparable<FilePath>, IComparable<string>
     {
@@ -58,7 +58,7 @@
 
         public int CompareTo(FilePath? other)
         {
-            if (other == null)
+            if (other is null)
                 return 1;
             return string.Compare(_path, other.ToString(), StringComparison.Ordinal);
         }

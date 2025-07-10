@@ -1,7 +1,7 @@
-﻿using Hypah.Utility.FileSystem;
+﻿using Hypah.Utility.Files;
 using System.Diagnostics;
 
-namespace Hypah.Utility.Execution
+namespace Hypah.Utility.Os.Execution
 {
     public sealed class Execute
     {

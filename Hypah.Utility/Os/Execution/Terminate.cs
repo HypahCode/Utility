@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Hypah.Utility.Execution
+namespace Hypah.Utility.Os.Execution
 {
     public static class Terminate
     {

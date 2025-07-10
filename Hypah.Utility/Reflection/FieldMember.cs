@@ -39,7 +39,7 @@ namespace Hypah.Utility.Reflection
 
         public void SetValue(object target, object value)
         {
-            Field.SetValue(target, null);
+            Field.SetValue(target, value);
         }
     }
 }

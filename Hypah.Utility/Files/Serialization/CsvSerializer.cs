@@ -1,5 +1,4 @@
-﻿
-namespace Hypah.Utility.Serialization
+﻿namespace Hypah.Utility.Files.Serialization
 {
     public class CsvSerializer<T> where T : class, new()
     {
@@ -30,7 +29,7 @@ namespace Hypah.Utility.Serialization
                     {
                         var value = fields[map.Index];
                         if (Trim) value = value.Trim();
-                        var propType = map.Prop.PropertyType;
+                        var propType = map.Prop!.PropertyType;
                         object? converted = string.IsNullOrEmpty(value) ? null : Convert.ChangeType(value, propType);
                         map.Prop.SetValue(obj, converted);
                     }

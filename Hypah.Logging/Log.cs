@@ -22,7 +22,6 @@ namespace Hypah.Logging
         public static void Trace(string component, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
         {
             Instance.LogMessage(new LogMessage(LogLevel.Trace, component, methodName ?? "", filePath ?? "", lineNumber, msg, DateTime.Now));
-
         }
 
         public static void Debug(string component, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
@@ -43,6 +42,11 @@ namespace Hypah.Logging
         public static void Error(string component, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
         {
             Instance.LogMessage(new LogMessage(LogLevel.Error, component, methodName ?? "", filePath ?? "", lineNumber, msg, DateTime.Now));
+        }
+
+        public static void Error(string component, Exception exception, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
+        {
+            Instance.LogMessage(new LogMessage(LogLevel.Error, component, methodName ?? "", filePath ?? "", lineNumber, exception.ToString(), DateTime.Now));
         }
 
         public static void Fatal(string component, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
