@@ -1,5 +1,4 @@
 ﻿using Hypah.Utility.Reflection;
-using System.Reflection;
 
 namespace Hypah.Utility.Files.Serialization
 {
@@ -34,6 +33,10 @@ namespace Hypah.Utility.Files.Serialization
             else if (IsEnumerableType(type))
             {
                 SerializeEnumerable(buffer, obj);
+            }
+            else if (IsDictionary(type))
+            {
+                SerializeDictionary(buffer, obj);
             }
             else if (type.IsClass)
             {
@@ -93,6 +96,33 @@ namespace Hypah.Utility.Files.Serialization
             }
         }
 
+        private void SerializeDictionary(BinaryBuffer buffer, object obj)
+        {
+            var keyType = obj.GetType().GetGenericArguments()[0];
+            var valueType = obj.GetType().GetGenericArguments()[1];
+            var countMethodInfo = obj.GetType().GetProperty("Count");
+
+            var getEnumeratorMethodInfo = obj.GetType().GetMethods().Single(method => method.Name == "GetEnumerator" && method.GetParameters().Length == 0);
+
+            var iterator = getEnumeratorMethodInfo.Invoke(obj, [])!;
+            var moveNextMethodInfo = iterator.GetType().GetMethods().Single(method => method.Name == "MoveNext" && method.GetParameters().Length == 0);
+            var currentPropertyInfo = iterator.GetType().GetProperty("Current");
+
+            var count = (int)countMethodInfo!.GetValue(obj)!;
+            buffer.Write(count);
+
+            while ((bool)moveNextMethodInfo.Invoke(iterator, [])!)
+            {
+                var element = currentPropertyInfo!.GetValue(iterator)!;
+                var key = element.GetType().GetProperty("Key")!.GetValue(element)!;
+                var value = element.GetType().GetProperty("Value")!.GetValue(element)!;
+                SerializeType(buffer, key);
+                SerializeType(buffer, value);
+            }
+
+            buffer.Write(0);
+        }
+
         private object DeserializeType(BinaryBuffer buffer, Type type)
         {
             if (type == typeof(string))
@@ -106,6 +136,10 @@ namespace Hypah.Utility.Files.Serialization
             else if (IsEnumerableType(type))
             { 
                 return DeserializeEnumerable(buffer, type);
+            }
+            else if (IsDictionary(type))
+            {
+                return DeserializeDictionary(buffer, type);
             }
             else if (type.IsClass)
             {
@@ -155,6 +189,26 @@ namespace Hypah.Utility.Files.Serialization
             return array;
         }
 
+        private object DeserializeDictionary(BinaryBuffer buffer, Type type)
+        {
+            var dictionary = Activator.CreateInstance(type);
+
+            var keyType = type.GenericTypeArguments[0];
+            var valueType = type.GenericTypeArguments[1];
+            var count = buffer.ReadInt32();
+
+            var addMethodInfo = type.GetMethod("Add", [ keyType, valueType ]);
+            for (int i = 0; i < count; i++)
+            {
+                var key = DeserializeType(buffer, keyType);
+                var value = DeserializeType(buffer, valueType);
+
+                addMethodInfo.Invoke(dictionary, [ key, value ]);
+            }
+
+            return dictionary;
+        }
+
         private bool IsEnumerableType(Type type)
         {
             var a = type.GetGenericArguments();
@@ -167,5 +221,16 @@ namespace Hypah.Utility.Files.Serialization
             return false;
         }
 
+        private bool IsDictionary(Type type)
+        {
+            var a = type.GetGenericArguments();
+            if (a.Length == 2)
+            {
+                var enumerableType = typeof(IDictionary<,>).MakeGenericType(a);
+                var isDictionaryType = enumerableType.IsAssignableFrom(type);
+                return isDictionaryType;
+            }
+            return false;
+        }
     }
 }
