@@ -18,38 +18,43 @@ namespace Hypah.Logging
         {
         }
 
-        public void Trace(string component, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
+        public void Trace(string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
         {
-            Log.Trace(component, msg, methodName ?? "", filePath ?? "", lineNumber);
+            Log.Trace(_component, msg, methodName ?? "", filePath ?? "", lineNumber);
         }
 
-        public void Debug(string component, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
+        public void Debug(string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
         {
-            Log.Debug(component, msg, methodName ?? "", filePath ?? "", lineNumber);
+            Log.Debug(_component, msg, methodName ?? "", filePath ?? "", lineNumber);
         }
 
-        public void Info(string component, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
+        public void Info(string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
         {
-            Log.Info(component, msg, methodName ?? "", filePath ?? "", lineNumber);
+            Log.Info(_component, msg, methodName ?? "", filePath ?? "", lineNumber);
         }
 
-        public void Warning(string component, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
+        public void Warning(string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
         {
-            Log.Warning(component, msg, methodName ?? "", filePath ?? "", lineNumber);
+            Log.Warning(_component, msg, methodName ?? "", filePath ?? "", lineNumber);
         }
 
-        public void Error(string component, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
+        public void Error(string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
         {
-            Log.Error(component, msg, methodName ?? "", filePath ?? "", lineNumber);
+            Log.Error(_component, msg, methodName ?? "", filePath ?? "", lineNumber);
         }
 
-        public void Error(string component, Exception exception, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
+        public void Error(string msg, Exception exception, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
         {
-            Log.Error(component, exception, methodName ?? "", filePath ?? "", lineNumber);
+            Log.Error(_component, msg + " " + exception.ToString(), methodName ?? "", filePath ?? "", lineNumber);
         }
-        public void Fatal(string component, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
+
+        public void Error(Exception exception, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
         {
-            Log.Fatal(component, msg, methodName ?? "", filePath ?? "", lineNumber);
+            Log.Error(_component, exception, methodName ?? "", filePath ?? "", lineNumber);
+        }
+        public void Fatal(string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
+        {
+            Log.Fatal(_component, msg, methodName ?? "", filePath ?? "", lineNumber);
         }
 
         public void Write(LogLevel level, string msg, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)

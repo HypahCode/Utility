@@ -105,7 +105,7 @@ namespace Hypah.Utility.Files.Serialization
             var getEnumeratorMethodInfo = obj.GetType().GetMethods().Single(method => method.Name == "GetEnumerator" && method.GetParameters().Length == 0);
 
             var iterator = getEnumeratorMethodInfo.Invoke(obj, [])!;
-            var moveNextMethodInfo = iterator.GetType().GetMethods().Single(method => method.Name == "MoveNext" && method.GetParameters().Length == 0);
+            var moveNextMethodInfo = iterator.GetType().GetMethod("MoveNext");
             var currentPropertyInfo = iterator.GetType().GetProperty("Current");
 
             var count = (int)countMethodInfo!.GetValue(obj)!;
@@ -129,19 +129,19 @@ namespace Hypah.Utility.Files.Serialization
             {
                 return buffer.ReadString();
             }
-            else if (type.IsArray)
+            if (type.IsArray)
             {
                 return DeserializeArray(buffer, type);
             }
-            else if (IsEnumerableType(type))
+            if (IsEnumerableType(type))
             { 
                 return DeserializeEnumerable(buffer, type);
             }
-            else if (IsDictionary(type))
+            if (IsDictionary(type))
             {
                 return DeserializeDictionary(buffer, type);
             }
-            else if (type.IsClass)
+            if (type.IsClass)
             {
                 return DeserializeClass(buffer, type);
             }
