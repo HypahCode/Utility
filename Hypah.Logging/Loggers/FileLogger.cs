@@ -9,6 +9,8 @@ namespace Hypah.Logging.Loggers
         private DateTime _creationDate;
         private readonly object _lock = new object();
 
+        public LogLevel MinLevel { get; set; } = LogLevel.Trace;
+
         public static FileLogger CreateOnEmptyFile(string fileName)
         {
             File.Create(fileName);

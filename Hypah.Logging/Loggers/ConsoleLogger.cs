@@ -2,6 +2,13 @@
 {
     internal class ConsoleLogger : ILogReceiver
     {
+        public LogLevel MinLevel { get; set; } = LogLevel.Trace;
+
+        public ConsoleLogger(LogLevel minLevel = LogLevel.Info)
+        {
+            MinLevel = minLevel;
+        }
+
         public void LogMessage(LogMessage message)
         {
             string timeStamp = message.TimeStamp.ToString("HH:mm");
